@@ -1,4 +1,4 @@
-
+---
 - name: Add site nginx config
   template:
     src: "nginx/{{ item.value.mode | default('proxy_pass') }}.conf.j2"
