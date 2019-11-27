@@ -1,0 +1,18 @@
+galaxy_info:
+  author: mattdodge
+  description: A quick and easy nginx reverse proxy with sane deafults - LetsEncrypt SSL/TLS, Auto HTTPS upgrade
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - nginx
+    - reverseproxy
+    - letsencrypt
+    - ssl
+dependencies: []
