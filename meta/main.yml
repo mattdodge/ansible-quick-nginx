@@ -1,5 +1,6 @@
 galaxy_info:
   author: mattdodge
+  role_name: quick_nginx
   description: A quick and easy nginx reverse proxy with sane deafults - LetsEncrypt SSL/TLS, Auto HTTPS upgrade
   license: MIT
   min_ansible_version: 2.4
