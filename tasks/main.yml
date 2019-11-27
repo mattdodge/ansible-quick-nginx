@@ -1,5 +1,4 @@
 ---
-
 - include: install.yml
   tags:
     - quick-nginx
@@ -16,4 +15,3 @@
   tags:
     - quick-nginx
     - sites
-

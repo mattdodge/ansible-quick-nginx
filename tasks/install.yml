@@ -2,7 +2,7 @@
 
 - name: Install Nginx and dependencies
   apt:
-    name: 
+    name:
       - nginx
       - ssl-cert
     state: present
