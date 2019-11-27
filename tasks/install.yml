@@ -1,0 +1,27 @@
+---
+
+- name: Install Nginx and dependencies
+  apt:
+    name: 
+      - nginx
+      - ssl-cert
+    state: present
+    update_cache: yes
+
+- name: Set up nginx directories
+  file:
+    path: "/etc/nginx/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+  with_items:
+    - sites-available
+    - sites-enabled
+
+- name: Install certbot
+  get_url:
+    url: https://dl.eff.org/certbot-auto
+    dest: /usr/bin/certbot-auto
+    mode: "a+x"
+  when:
+    - letsencrypt | default(True)

@@ -1,0 +1,19 @@
+---
+
+- include: install.yml
+  tags:
+    - quick-nginx
+    - install
+
+- include: letsencrypt.yml
+  tags:
+    - quick-nginx
+    - letsencrypt
+  when:
+    - quick_nginx.letsencrypt | default(True)
+
+- include: site.yml
+  tags:
+    - quick-nginx
+    - sites
+

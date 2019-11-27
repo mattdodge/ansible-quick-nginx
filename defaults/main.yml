@@ -1,0 +1,10 @@
+---
+
+quick_nginx:
+  sites:
+    default_site:
+      domains:
+        - mydomain.com
+      upstream: 127.0.0.1:3000
+      letsencrypt_email: myemail@mydomain.com
+  letsencrypt: True

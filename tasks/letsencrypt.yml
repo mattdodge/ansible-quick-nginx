@@ -1,0 +1,61 @@
+---
+- name: Create html root for well-known certbot files
+  file:
+    dest: /var/www/{{ item.key }}/.well-known
+    mode: 0775
+    state: directory
+    owner: www-data
+    group: www-data
+  with_dict: "{{ quick_nginx.sites }}"
+
+# Tasks in this block run if we need to generate a cert for a new site
+- name: Generate certs for the first time
+  block:
+    - name: Determine if we have certs already
+      stat:
+        path: "/etc/letsencrypt/live/{{ item.key }}/fullchain.pem"
+      register: existing_certs
+      with_dict: "{{ quick_nginx.sites }}"
+
+    - debug: msg="{{ item.item.key }} certificate already exists, skipping"
+      when: item.stat.exists
+      with_items: "{{ existing_certs.results }}"
+
+    # We will temporarily set up the nginx site to only listen to http to serve the well-known challenge
+    - name: Add temp nginx config to create cert
+      template:
+        src: "nginx/cert_create.conf.j2"
+        dest: /etc/nginx/sites-available/{{ result_item.item.key }}.conf
+        owner: root
+        group: root
+      vars:
+        item: "{{ result_item.item }}"
+      when: not result_item.stat.exists
+      with_items: "{{ existing_certs.results }}"
+      loop_control:
+        loop_var: result_item
+
+    - name: Enable temp nginx site
+      file:
+        src: /etc/nginx/sites-available/{{ item.item.key }}.conf
+        dest: /etc/nginx/sites-enabled/{{ item.item.key }}
+        state: link
+      when: not item.stat.exists
+      with_items: "{{ existing_certs.results }}"
+
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
+    # TODO: Only reload nginx if we changed certs
+
+    - name: Generate cert
+      command: |
+        certbot-auto certonly
+        --webroot -w /var/www/{{ item.item.key }}
+        -d {{ item.item.value.domains | join(' -d ') }}
+        --email {{ item.item.value.letsencrypt_email }}
+        --non-interactive --cert-name {{ item.item.key }}
+        --agree-tos creates=/etc/letsencrypt/live/{{ item.item.key }}/fullchain.pem
+      when: not item.stat.exists
+      with_items: "{{ existing_certs.results }}"

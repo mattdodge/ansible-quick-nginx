@@ -1,0 +1,17 @@
+
+- name: Add site nginx config
+  template:
+    src: "nginx/{{ item.value.mode | default('proxy_pass') }}.conf.j2"
+    dest: /etc/nginx/sites-available/{{ item.key }}.conf
+    owner: root
+    group: root
+  with_dict: "{{ quick_nginx.sites }}"
+  notify: Reload Nginx
+
+- name: Enable nginx site
+  file:
+    src: /etc/nginx/sites-available/{{ item.key }}.conf
+    dest: /etc/nginx/sites-enabled/{{ item.key }}
+    state: link
+  with_dict: "{{ quick_nginx.sites }}"
+  notify: Reload Nginx

@@ -7,6 +7,7 @@ A quick and easy way to get nginx running on your server using Ansible. Comes wi
 I just want an nginx reverse proxy with a sane set defaults. I don't want to configure a thousand different nginx settings. It's the 21st century, so naturally we should have all of these in our reverse proxy by default:
 * SSL/TLS certs that auto-renew with 0 downtime via LetsEncrypt
 * Automatic HTTP -> HTTPS upgrade
+* HSTS enabled
 
 ## Example
 ```yml
