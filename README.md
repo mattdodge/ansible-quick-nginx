@@ -61,6 +61,8 @@ The following modes are available in the repo by default. Each contains some var
 
 * **proxy_pass** - Proxy requests to an upstream/backend
   * **upstream** - The hostname and port of the upstream to proxy requests to. Proxy pass will proxy via HTTP even though incoming requests to the nginx server may occur over HTTPS.
+* **redirect** - Perform a 301 HTTP redirect to a different site
+  * **redirect_domain** - The domain name to redirect all incoming requests to this site to. Paths and query strings will be preserved.
 
 ### Creating New Modes
 A mode is pretty much just a mapping to an nginx configuration template; these live in `templates/nginx`. To create a new mode, for example `no_ssl`, create a new template at `templates/nginx/no_ssl.conf.j2`. Now you can pass `mode: no_ssl` to a site to use that nginx template instead. Of course, Ansible variables are available for use in your template.
