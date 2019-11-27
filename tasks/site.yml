@@ -5,7 +5,7 @@
     dest: /etc/nginx/sites-available/{{ item.key }}.conf
     owner: root
     group: root
-  with_dict: "{{ quick_nginx.sites }}"
+  with_dict: "{{ quick_nginx }}"
   notify: Reload Nginx
 
 - name: Enable nginx site
@@ -13,5 +13,5 @@
     src: /etc/nginx/sites-available/{{ item.key }}.conf
     dest: /etc/nginx/sites-enabled/{{ item.key }}
     state: link
-  with_dict: "{{ quick_nginx.sites }}"
+  with_dict: "{{ quick_nginx }}"
   notify: Reload Nginx

@@ -9,7 +9,7 @@
     - quick-nginx
     - letsencrypt
   when:
-    - quick_nginx.letsencrypt | default(True)
+    - quick_nginx_letsencrypt | default(True)
 
 - include: site.yml
   tags:
