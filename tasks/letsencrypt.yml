@@ -53,7 +53,7 @@
       command: |
         certbot-auto certonly
         --webroot -w /var/www/{{ item.item.key }}
-        -d {{ item.item.value.domains | join(' -d ') }}
+        -d {{ item.item.value.domains | join( ' -d ') }}
         --email {{ item.item.value.letsencrypt_email }}
         --non-interactive --cert-name {{ item.item.key }}
         --agree-tos creates=/etc/letsencrypt/live/{{ item.item.key }}/fullchain.pem
