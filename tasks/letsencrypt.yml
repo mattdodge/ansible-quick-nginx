@@ -59,3 +59,11 @@
         --agree-tos creates=/etc/letsencrypt/live/{{ item.item.key }}/fullchain.pem
       when: not item.stat.exists
       with_items: "{{ existing_certs.results }}"
+
+- name: certbot cron job
+  cron:
+    name: "certbot renew"
+    job: 'certbot-auto renew --post-hook "systemctl reload nginx" >> /var/log/letsencrypt/letsencrypt-update.log 2>&1'
+    hour: "3"
+    minute: "30"
+    weekday: "1"
